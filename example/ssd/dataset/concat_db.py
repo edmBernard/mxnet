@@ -1,4 +1,4 @@
-from imdb import Imdb
+from .imdb import Imdb
 import random
 
 class ConcatDB(Imdb):

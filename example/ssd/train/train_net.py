@@ -4,8 +4,8 @@ import logging
 import sys
 import os
 import importlib
-from initializer import ScaleInitializer
-from metric import MultiBoxMetric
+from .initializer import ScaleInitializer
+from .metric import MultiBoxMetric
 from dataset.iterator import DetIter
 from dataset.pascal_voc import PascalVoc
 from dataset.concat_db import ConcatDB
