@@ -43,7 +43,7 @@ def parse_args():
                         default=20, type=int)
     parser.add_argument('--data-shape', dest='data_shape', type=int, default=300,
                         help='set image shape')
-    parser.add_argument('--lr', dest='learning_rate', type=float, default=0.001,
+    parser.add_argument('--lr', dest='learning_rate', type=float, default=0.002,
                         help='learning rate')
     parser.add_argument('--momentum', dest='momentum', type=float, default=0.9,
                         help='momentum')
@@ -55,9 +55,9 @@ def parse_args():
                         help='green mean value')
     parser.add_argument('--mean-b', dest='mean_b', type=float, default=104,
                         help='blue mean value')
-    parser.add_argument('--lr-epoch', dest='lr_refactor_epoch', type=int, default=50,
+    parser.add_argument('--lr-epoch', dest='lr_refactor_epoch', type=int, default=20,
                         help='refactor learning rate every N epoch')
-    parser.add_argument('--lr-ratio', dest='lr_refactor_ratio', type=float, default=0.9,
+    parser.add_argument('--lr-ratio', dest='lr_refactor_ratio', type=float, default=0.8,
                         help='ratio to refactor learning rate')
     parser.add_argument('--log', dest='log_file', type=str, default="train.log",
                         help='save training log to file')
