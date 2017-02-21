@@ -11,6 +11,7 @@ from dataset.pascal_voc import PascalVoc
 from dataset.concat_db import ConcatDB
 from config.config import cfg
 
+
 def load_pascal(image_set, year, devkit_path, shuffle=False):
     """
     wrapper function for loading pascal voc dataset
@@ -50,6 +51,7 @@ def load_pascal(image_set, year, devkit_path, shuffle=False):
     else:
         return imdbs[0]
 
+
 def convert_pretrained(name, args):
     """
     Special operations need to be made due to name inconsistance, etc
@@ -72,12 +74,13 @@ def convert_pretrained(name, args):
         del args['fc8_bias']
     return args
 
+
 def train_net(net, dataset, image_set, year, devkit_path, batch_size,
-               data_shape, mean_pixels, resume, finetune, pretrained, epoch, prefix,
-               ctx, begin_epoch, end_epoch, frequent, learning_rate,
-               momentum, weight_decay, val_set, val_year,
-               lr_refactor_epoch, lr_refactor_ratio,
-               iter_monitor=0, log_file=None):
+              data_shape, mean_pixels, resume, finetune, pretrained, epoch, prefix,
+              ctx, begin_epoch, end_epoch, frequent, learning_rate,
+              momentum, weight_decay, val_set, val_year,
+              lr_refactor_epoch, lr_refactor_ratio,
+              iter_monitor=0, log_file=None):
     """
     Wrapper for training module
 
@@ -198,31 +201,31 @@ def train_net(net, dataset, image_set, year, devkit_path, batch_size,
 
     # define layers with fixed weight/bias
     fixed_param_names = [name for name in net.list_arguments() \
-        if name.startswith('conv1_') or name.startswith('conv2_')]
+                         if name.startswith('conv1_') or name.startswith('conv2_')]
 
     # load pretrained or resume from previous state
-    ctx_str = '('+ ','.join([str(c) for c in ctx]) + ')'
+    ctx_str = '(' + ','.join([str(c) for c in ctx]) + ')'
     if resume > 0:
         logger.info("Resume training with {} from epoch {}"
-            .format(ctx_str, resume))
+                    .format(ctx_str, resume))
         _, args, auxs = mx.model.load_checkpoint(prefix, resume)
         begin_epoch = resume
     elif finetune > 0:
         logger.info("Start finetuning with {} from epoch {}"
-            .format(ctx_str, finetune))
+                    .format(ctx_str, finetune))
         _, args, auxs = mx.model.load_checkpoint(prefix, finetune)
         begin_epoch = finetune
         # the prediction convolution layers name starts with relu, so it's fine
         fixed_param_names = [name for name in net.list_arguments() \
-            if name.startswith('conv')]
+                             if name.startswith('conv')]
     elif pretrained:
         logger.info("Start training with {} from pretrained model {}"
-            .format(ctx_str, pretrained))
+                    .format(ctx_str, pretrained))
         _, args, auxs = mx.model.load_checkpoint(pretrained, epoch)
         args = convert_pretrained(pretrained, args)
     else:
         logger.info("Experimental: start training from scratch with {}"
-            .format(ctx_str))
+                    .format(ctx_str))
         args = None
         auxs = None
         fixed_param_names = None
@@ -240,15 +243,15 @@ def train_net(net, dataset, image_set, year, devkit_path, batch_size,
     epoch_end_callback = mx.callback.do_checkpoint(prefix)
     iter_refactor = lr_refactor_epoch * imdb.num_images // train_iter.batch_size
     lr_scheduler = mx.lr_scheduler.FactorScheduler(iter_refactor, lr_refactor_ratio)
-    optimizer_params={'learning_rate':learning_rate,
-                      'momentum':momentum,
-                      'wd':weight_decay,
-                      'lr_scheduler':lr_scheduler,
-                      'clip_gradient':None,
-                      'rescale_grad': 1.0}
+    optimizer_params = {'learning_rate': learning_rate,
+                        'momentum': momentum,
+                        'wd': weight_decay,
+                        'lr_scheduler': lr_scheduler,
+                        'clip_gradient': None,
+                        'rescale_grad': 1.0}
     monitor = mx.mon.Monitor(iter_monitor, pattern=".*") if iter_monitor > 0 else None
     initializer = mx.init.Mixed([".*scale", ".*"], \
-        [ScaleInitializer(), mx.init.Xavier(magnitude=1)])
+                                [ScaleInitializer(), mx.init.Xavier(magnitude=1)])
 
     mod.fit(train_iter,
             eval_data=val_iter,
@@ -257,7 +260,7 @@ def train_net(net, dataset, image_set, year, devkit_path, batch_size,
             epoch_end_callback=epoch_end_callback,
             optimizer='sgd',
             optimizer_params=optimizer_params,
-            kvstore = kv,
+            kvstore=kv,
             begin_epoch=begin_epoch,
             num_epoch=end_epoch,
             initializer=initializer,

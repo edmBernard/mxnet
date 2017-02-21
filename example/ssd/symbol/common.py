@@ -1,8 +1,8 @@
 import mxnet as mx
 import numpy as np
 
-def conv_act_layer(from_layer, name, num_filter, kernel=(1,1), pad=(0,0), \
-    stride=(1,1), act_type="relu", use_batchnorm=False):
+
+def conv_act_layer(from_layer, name, num_filter, kernel=(1, 1), pad=(0, 0), stride=(1, 1), act_type="relu", use_batchnorm=False):
     """
     wrapper for a small Convolution group
 
@@ -30,17 +30,14 @@ def conv_act_layer(from_layer, name, num_filter, kernel=(1,1), pad=(0,0), \
     (conv, relu) mx.Symbols
     """
     assert not use_batchnorm, "batchnorm not yet supported"
-    conv = mx.symbol.Convolution(data=from_layer, kernel=kernel, pad=pad, \
-        stride=stride, num_filter=num_filter, name="conv{}".format(name))
-    relu = mx.symbol.Activation(data=conv, act_type=act_type, \
-        name="{}{}".format(act_type, name))
+    conv = mx.symbol.Convolution(data=from_layer, kernel=kernel, pad=pad, stride=stride, num_filter=num_filter, name="conv{}".format(name))
+    relu = mx.symbol.Activation(data=conv, act_type=act_type, name="{}{}".format(act_type, name))
     if use_batchnorm:
         relu = mx.symbol.BatchNorm(data=relu, name="bn{}".format(name))
     return conv, relu
 
-def multibox_layer(from_layers, num_classes, sizes=[.2, .95],
-                    ratios=[1], normalization=-1, num_channels=[],
-                    clip=True, interm_layer=0):
+
+def multibox_layer(from_layers, num_classes, sizes=[.2, .95], ratios=[1], normalization=-1, num_channels=[], clip=True, interm_layer=0):
     """
     the basic aggregation module for SSD detection. Takes in multiple layers,
     generate multiple object detection targets by customized layers
