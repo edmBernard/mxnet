@@ -198,8 +198,8 @@ def get_symbol_train(num_classes=20):
     # global Pooling
     pool10 = mx.symbol.Pooling(data=relu10_2, pool_type="avg", global_pool=True, kernel=(1, 1), name='pool10')
 
-    # TODO specific parameters for inception network we remove relu4_3, relu7 don't find equivalent layer in inception yet
-    from_layers = [conv_4, relu8_2, relu9_2, relu10_2, pool10]  # relu4_3, relu7,
+    # TODO specific parameters for inception network we replace relu4_3, relu7 by conv_4, in3d don't find good equivalent layer in inception yet
+    from_layers = [conv_4, in3d, relu8_2, relu9_2, relu10_2, pool10]  # relu4_3, relu7,
     sizes = [[.1], [.2, .276], [.38, .461], [.56, .644], [.74, .825], [.92, 1.01]]  # [.1], [.2, .276], 
     ratios = [[1, 2, .5], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3]]  # [1, 2, .5], [1, 2, .5, 3, 1./3], 
     normalizations = [20, -1, -1, -1, -1, -1]  # [20, -1, -1, -1, -1, -1]
