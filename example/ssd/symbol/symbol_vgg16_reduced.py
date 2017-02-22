@@ -22,8 +22,10 @@ def get_symbol_train(num_classes=20):
     data = mx.symbol.Variable(name="data")
     label = mx.symbol.Variable(name="label")
 
+    print("========================")
+    print("get symbol train : VGG16")
+    print("========================")
     # ====== vgg16 reduced layer ======
-
     # group 1
     conv1_1 = mx.symbol.Convolution(
         data=data, kernel=(3, 3), pad=(1, 1), num_filter=64, name="conv1_1")

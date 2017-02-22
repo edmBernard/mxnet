@@ -129,8 +129,10 @@ def get_symbol_train(num_classes=20):
     data = mx.symbol.Variable(name="data")
     label = mx.symbol.Variable(name="label")
 
+    print("===============================")
+    print("get symbol train : inception v3")
+    print("===============================")
     # ====== inception v3 layer ======
-
     # stage 1
     conv = Conv(data, 32, kernel=(3, 3), stride=(2, 2), name="conv")
     conv_1 = Conv(conv, 32, kernel=(3, 3), name="conv_1")
@@ -196,12 +198,12 @@ def get_symbol_train(num_classes=20):
     # global Pooling
     pool10 = mx.symbol.Pooling(data=relu10_2, pool_type="avg", global_pool=True, kernel=(1, 1), name='pool10')
 
-    # specific parameters for VGG16 network
-    from_layers = [relu4_3, relu7, relu8_2, relu9_2, relu10_2, pool10]
-    sizes = [[.1], [.2, .276], [.38, .461], [.56, .644], [.74, .825], [.92, 1.01]]
-    ratios = [[1, 2, .5], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3]]
-    normalizations = [20, -1, -1, -1, -1, -1]
-    num_channels = [512]
+    # TODO specific parameters for inception network we remove relu4_3, relu7 don't find equivalent layer in inception yet
+    from_layers = [conv_4, relu8_2, relu9_2, relu10_2, pool10]  # relu4_3, relu7,
+    sizes = [[.1], [.2, .276], [.38, .461], [.56, .644], [.74, .825], [.92, 1.01]]  # [.1], [.2, .276], 
+    ratios = [[1, 2, .5], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3]]  # [1, 2, .5], [1, 2, .5, 3, 1./3], 
+    normalizations = [20, -1, -1, -1, -1, -1]  # [20, -1, -1, -1, -1, -1]
+    num_channels = [192]
 
     loc_preds, cls_preds, anchor_boxes = multibox_layer(
         from_layers, num_classes, sizes=sizes, ratios=ratios,
