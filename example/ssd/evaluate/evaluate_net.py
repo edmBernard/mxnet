@@ -7,6 +7,7 @@ from detect.detector import Detector
 from config.config import cfg
 import logging
 
+
 def evaluate_net(net, dataset, devkit_path, mean_pixels, data_shape,
                  model_prefix, epoch, ctx, year=None, sets='test',
                  batch_size=1, nms_thresh=0.5, force_nms=False):

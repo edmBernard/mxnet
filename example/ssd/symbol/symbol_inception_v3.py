@@ -253,7 +253,7 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_suppress=True):
     mx.Symbol
     """
     net = get_symbol_train(num_classes)
-    # print net.get_internals().list_outputs()
+    #print net.get_internals().list_outputs()
     cls_preds = net.get_internals()["multibox_cls_pred_output"]
     loc_preds = net.get_internals()["multibox_loc_pred_output"]
     anchor_boxes = net.get_internals()["multibox_anchors_output"]
