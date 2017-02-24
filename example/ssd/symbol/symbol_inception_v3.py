@@ -193,15 +193,15 @@ def get_symbol_train(num_classes=20):
         data=in5b, kernel=(3, 3), pad=(6, 6), dilate=(6, 6),
         num_filter=1024, name="conv6")
     relu6 = mx.symbol.Activation(data=conv6, act_type="relu", name="relu6")
-    # drop6 = mx.symbol.Dropout(data=relu6, p=0.5, name="drop6")
+    drop6 = mx.symbol.Dropout(data=relu6, p=0.5, name="drop6")
     # group 7
     conv7 = mx.symbol.Convolution(
-        data=relu6, kernel=(1, 1), pad=(0, 0), num_filter=1024, name="conv7")
+        data=drop6, kernel=(1, 1), pad=(0, 0), num_filter=1024, name="conv7")
     relu7 = mx.symbol.Activation(data=conv7, act_type="relu", name="relu7")
-    # drop7 = mx.symbol.Dropout(data=relu7, p=0.5, name="drop7")
+    drop7 = mx.symbol.Dropout(data=relu7, p=0.5, name="drop7")
 
     # ====== ssd extra layers ======
-    conv8_1, relu8_1 = conv_act_layer(relu7, "8_1", 256, kernel=(1, 1), pad=(0, 0), stride=(1, 1), act_type="relu", use_batchnorm=False)
+    conv8_1, relu8_1 = conv_act_layer(drop7, "8_1", 256, kernel=(1, 1), pad=(0, 0), stride=(1, 1), act_type="relu", use_batchnorm=False)
     conv8_2, relu8_2 = conv_act_layer(relu8_1, "8_2", 512, kernel=(3, 3), pad=(1, 1), stride=(2, 2), act_type="relu", use_batchnorm=False)
     conv9_1, relu9_1 = conv_act_layer(relu8_2, "9_1", 128, kernel=(1, 1), pad=(0, 0), stride=(1, 1), act_type="relu", use_batchnorm=False)
     conv9_2, relu9_2 = conv_act_layer(relu9_1, "9_2", 256, kernel=(3, 3), pad=(1, 1), stride=(2, 2), act_type="relu", use_batchnorm=False)
@@ -211,7 +211,7 @@ def get_symbol_train(num_classes=20):
     pool10 = mx.symbol.Pooling(data=relu10_2, pool_type="avg", global_pool=True, kernel=(1, 1), name='pool10')
 
     # TODO specific parameters for inception network we replace relu4_3, relu7 by in4a, in5a don't find good equivalent layer in inception yet
-    from_layers = [in3d, relu7, relu8_2, relu9_2, relu10_2, pool10]  # relu4_3, relu7,
+    from_layers = [in3d, drop7, relu8_2, relu9_2, relu10_2, pool10]  # relu4_3, relu7,
     sizes = [[.1], [.2, .276], [.38, .461], [.56, .644], [.74, .825], [.92, 1.01]]  # [.1], [.2, .276], 
     ratios = [[1, 2, .5], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3], [1, 2, .5, 3, 1./3]]  # [1, 2, .5], [1, 2, .5, 3, 1./3], 
     normalizations = [20, -1, -1, -1, -1, -1]  # [20, -1, -1, -1, -1, -1]
