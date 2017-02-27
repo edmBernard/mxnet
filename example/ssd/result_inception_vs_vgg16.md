@@ -1,7 +1,8 @@
-
+Comparaison between inception_v3 and vgg16_reduced
+==================================================
 
 |       inception_v3            |      vgg16_reduced            |
-|            --                 |           --                  |
+|:--:|:--:|
 | AP for aeroplane = 0.6638     | AP for aeroplane = 0.7215     |
 | AP for bicycle = 0.7589       | AP for bicycle = 0.7969       |
 | AP for bird = 0.6429          | AP for bird = 0.7020          |
