@@ -236,9 +236,10 @@ class PascalVoc(Imdb):
         None
         """
         for cls_ind, cls in enumerate(self.classes):
-            print('Writing {} VOC results file'.format(cls))
+            # print('Writing {} VOC results file'.format(cls))
             filename = self.get_result_file_template().format(cls)
-            with open(filename, 'wt') as f:
+            print('Writing {} VOC results file in {}'.format(cls, filename))
+            with open(filename, 'w') as f:
                 for im_ind, index in enumerate(self.image_set_index):
                     dets = all_boxes[im_ind]
                     if dets.shape[0] < 1:
