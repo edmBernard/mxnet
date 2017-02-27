@@ -1,3 +1,5 @@
+
+
 |       inception_v3            |      vgg16_reduced            |
 |            --                 |           --                  |
 | AP for aeroplane = 0.6638     | AP for aeroplane = 0.7215     |
