@@ -27,11 +27,9 @@ def get_symbol_train(num_classes=20):
     print("========================")
     # ====== vgg16 reduced layer ======
     # group 1
-    conv1_1 = mx.symbol.Convolution(
-        data=data, kernel=(3, 3), pad=(1, 1), num_filter=64, name="conv1_1")
+    conv1_1 = mx.symbol.Convolution(data=data, kernel=(3, 3), pad=(1, 1), num_filter=64, name="conv1_1")
     relu1_1 = mx.symbol.Activation(data=conv1_1, act_type="relu", name="relu1_1")
-    conv1_2 = mx.symbol.Convolution(
-        data=relu1_1, kernel=(3, 3), pad=(1, 1), num_filter=64, name="conv1_2")
+    conv1_2 = mx.symbol.Convolution(data=relu1_1, kernel=(3, 3), pad=(1, 1), num_filter=64, name="conv1_2")
     relu1_2 = mx.symbol.Activation(data=conv1_2, act_type="relu", name="relu1_2")
     pool1 = mx.symbol.Pooling(
         data=relu1_2, pool_type="max", kernel=(2, 2), stride=(2, 2), name="pool1")
@@ -81,7 +79,7 @@ def get_symbol_train(num_classes=20):
     relu5_3 = mx.symbol.Activation(data=conv5_3, act_type="relu", name="relu5_3")
     pool5 = mx.symbol.Pooling(
         data=relu5_3, pool_type="max", kernel=(3, 3), stride=(1, 1),
-        pad=(1,1), name="pool5")
+        pad=(1, 1), name="pool5")
     # group 6
     conv6 = mx.symbol.Convolution(
         data=pool5, kernel=(3, 3), pad=(6, 6), dilate=(6, 6),
